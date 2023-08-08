@@ -1,4 +1,4 @@
-module github.com/bmc-toolbox/bmclib/v2
+module github.com/nuclearbob/bmclib/v2
 
 go 1.18
 
