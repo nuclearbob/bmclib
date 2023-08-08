@@ -388,11 +388,11 @@ func (i *Ipmi) ReadUsers(ctx context.Context) (users []map[string]string, err er
 	return users, err
 }
 
-// SolInfo gets the status of the serial-over-lan interface
+// SolInfo gets the status of the serial-over-lan interface.
 func (i *Ipmi) SolInfo(ctx context.Context) (info string, err error) {
 	output, err := i.run(ctx, []string{"sol", "info"})
 	if err != nil {
-		return "", fmt.Errorf("%v: %v", err, output)
+		return "", fmt.Errorf("%w: %v", err, output)
 	}
 
 	return output, nil
@@ -403,20 +403,20 @@ func (i *Ipmi) SolInfo(ctx context.Context) (info string, err error) {
 func (i *Ipmi) SolActivate(ctx context.Context, stdin ...byte) (output string, err error) {
 	output, err = i.run(ctx, []string{"sol", "activate"}, stdin...)
 	if err != nil {
-		return output, fmt.Errorf("%v: %v", err, output)
+		return output, fmt.Errorf("%w", err)
 	}
 
-	if strings.HasPrefix(output, "[SOL Session operational.") {
+	if strings.Contains(output, "[SOL Session operational.") {
 		return output, nil
 	}
-	return "", fmt.Errorf("%v: %v", err, output)
+	return output, fmt.Errorf("%w", err)
 }
 
 // SolDeactivate disconnects the serial-over-lan interface.
 func (i *Ipmi) SolDeactivate(ctx context.Context) (output string, err error) {
 	output, err = i.run(ctx, []string{"sol", "deactivate"})
 	if err != nil {
-		return output, fmt.Errorf("%v: %v", err, output)
+		return output, fmt.Errorf("%w", err)
 	}
 
 	return output, nil
@@ -426,24 +426,24 @@ func (i *Ipmi) SolDeactivate(ctx context.Context) (output string, err error) {
 func (i *Ipmi) GetCiphers(ctx context.Context) (output string, err error) {
 	output, err = i.run(ctx, []string{"channel", "getciphers", "ipmi"})
 	if err != nil {
-		return output, fmt.Errorf("%v: %v", err, output)
+		return output, fmt.Errorf("%w", err)
 	}
 
 	if strings.HasPrefix(output, "ID   IANA") {
 		return output, nil
 	}
-	return output, fmt.Errorf("%v: %v", err, output)
+	return output, fmt.Errorf("%w", err)
 }
 
 // GetSOLCiphers gets a list of ciphers supported for SOL.
 func (i *Ipmi) GetSOLCiphers(ctx context.Context) (output string, err error) {
 	output, err = i.run(ctx, []string{"channel", "getciphers", "sol"})
 	if err != nil {
-		return output, fmt.Errorf("%v: %v", err, output)
+		return output, fmt.Errorf("%w", err)
 	}
 
 	if strings.HasPrefix(output, "ID   IANA") {
 		return output, nil
 	}
-	return output, fmt.Errorf("%v: %v", err, output)
+	return output, fmt.Errorf("%w", err)
 }
