@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	bmclibErrs "github.com/bmc-toolbox/bmclib/v2/errors"
-	"github.com/bmc-toolbox/bmclib/v2/internal/ipmi"
 	"github.com/bmc-toolbox/bmclib/v2/providers"
 	"github.com/go-logr/logr"
 	"github.com/jacobweinstock/registrar"
+	"github.com/nuclearbob/bmclib/v2/internal/ipmi"
 )
 
 const (
